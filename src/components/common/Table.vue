@@ -1,14 +1,14 @@
 <template>
-  <table>
+  <v-table>
     <thead>
       <tr>
-        <th class="text-center">
+        <th class="text-left title">
           {{ headers.text }}
         </th>
-        <th class="text-center">
+        <th class="text-left">
           {{ headers.write }}
         </th>
-        <th class="text-center">
+        <th class="text-left">
           {{ headers.date }}
         </th>
       </tr>
@@ -18,12 +18,12 @@
         v-for="item in board"
         :key="item.id"
       >
-        <td>{{ item.title }}</td>
+        <td class="title">{{ item.title }}</td>
         <td>{{ item.write }}</td>
         <td>{{ item.date }}</td>
       </tr>
     </tbody>
-  </table>
+  </v-table>
 </template>
 
 <script>
@@ -37,9 +37,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-table {
-  // width: 100%;
+.v-table {
+  width: 80%;
+  margin: 30px auto 0;
 }
 
+.title {
+  width: 80%;
+}
 </style>

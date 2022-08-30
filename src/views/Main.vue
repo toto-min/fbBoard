@@ -10,6 +10,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.main {
+  height: 500vh;
+}
 
 </style>
