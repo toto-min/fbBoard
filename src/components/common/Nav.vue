@@ -31,4 +31,9 @@ export default {
     width: 450px;
     height: 100vh;
 }
+
+a{
+    text-decoration: none;
+    color: #000000;
+}
 </style>
