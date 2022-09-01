@@ -14,7 +14,8 @@ import Header from './components/common/Header.vue'
 import Footer from './components/common/Footer.vue'
 import Nav from './components/common/Nav.vue'
 
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
+import { addDoc, collection } from 'firebase/firestore'
 export default {
   name: 'App',
   components: {
@@ -26,6 +27,12 @@ export default {
     const state = reactive({
       draw: false
     })
+
+    onMounted(() => {
+      console.log(addDoc)
+      console.log(collection)
+    })
+
     function dropMenu () {
       if (state.draw) {
         state.draw = false

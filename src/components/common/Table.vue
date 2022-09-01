@@ -16,7 +16,7 @@
     <tbody>
       <tr
         v-for="item in board"
-        :key="item.id"
+        :key="item"
       >
         <td class="title">{{ item.title }}</td>
         <td>{{ item.write }}</td>
