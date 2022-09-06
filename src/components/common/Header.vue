@@ -14,7 +14,7 @@
         <v-btn icon>
           <v-icon>mdi-heart</v-icon>
         </v-btn>
-        <v-btn icon>
+        <v-btn icon href="mailto:toto_min4016@naver.com">
             <v-icon>mdi-email</v-icon>
         </v-btn>
     </v-app-bar>

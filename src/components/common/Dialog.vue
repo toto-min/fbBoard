@@ -28,7 +28,7 @@
 </template>
 <script>
 
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 
 // import { getDatabase, ref, set } from 'firebase/database'
 import { addboard } from '@/api/board.js'
@@ -50,8 +50,17 @@ export default {
       title: '',
       write: '',
       conts: '',
-      date: ''
+      date: '',
+      num: 0
     })
+
+    onMounted(() => {
+
+    })
+
+    // function getData () {
+    //   console.log(getboard())
+    // }
 
     function addData () {
       const year = new Date().getFullYear()
@@ -61,14 +70,14 @@ export default {
       const minuet = new Date().getMinutes()
 
       const boardate = year + '-' + month + '-' + day + '-' + hour + '-' + minuet
-      const params = [
+      const params =
         {
+          id: state.num,
           title: state.title,
           write: state.write,
           conts: state.conts,
           date: boardate
         }
-      ]
 
       addboard(params)
       dialogCl()
