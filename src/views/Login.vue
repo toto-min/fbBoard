@@ -1,12 +1,11 @@
 <template>
   <v-card
     class="mx-auto"
-    width="400"
-    variant="outline"
-    title="Login"
+    max-width="344"
+    title="SignUp"
   >
     <v-card-item>
-      <v-text-field v-model="state.email" :rules="state.emailRules" label="E-mail" required></v-text-field>
+      <v-text-field v-model="state.email" :rules="state.emailRules" label="E-mail" required ></v-text-field>
       <v-text-field
             v-model="state.password"
             :append-icon="state.show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -20,14 +19,27 @@
           ></v-text-field>
     </v-card-item>
 
-    <v-card-actions>
+    <v-card-actions class="bg-blue-darken-2 text-center">
         <v-btn block dark @click="login">
             LOGIN
         </v-btn>
     </v-card-actions>
     <v-card-actions>
-        <v-btn @click="googleLG">
-            GoogleLogin
+        <v-btn block dark @click="googleLG">
+            GoogleSignUp
+        </v-btn>
+    </v-card-actions>
+
+    <v-divider></v-divider>
+    <v-card-actions>
+        <v-btn block dark @click="SignUp">
+            SignUp
+        </v-btn>
+    </v-card-actions>
+    <v-divider></v-divider>
+    <v-card-actions class="bg-red-darken-2 text-center">
+        <v-btn block @click="logOut">
+            LogOut
         </v-btn>
     </v-card-actions>
   </v-card>
@@ -35,11 +47,11 @@
 
 <script>
 import { reactive } from 'vue'
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 // import { auth } from '@/plugins/firebase'
 
 export default {
-  name: 'fbLogin',
+  name: 'fbSignUp',
 
   setup () {
     const state = reactive({
@@ -59,6 +71,15 @@ export default {
     })
 
     function login () {
+      signInWithEmailAndPassword(getAuth(), state.email, state.password)
+        .then((credential) => {
+          console.log(credential.user)
+        }).catch((err) => {
+          console.log(err)
+        })
+    }
+
+    function SignUp () {
       createUserWithEmailAndPassword(getAuth(), state.email, state.password)
         .then((credential) => {
           console.log(credential.user)
@@ -77,10 +98,21 @@ export default {
         })
     }
 
+    function logOut () {
+      signOut(getAuth())
+        .then(() => {
+          console.log('success')
+        }).catch((err) => {
+          console.log(err)
+        })
+    }
+
     return {
       state,
       login,
-      googleLG
+      SignUp,
+      googleLG,
+      logOut
     }
   }
 }
