@@ -38,7 +38,6 @@ export default {
 
     function titled () {
       state.title = props.title
-      emit('editMenu', state.title)
     }
 
     function addMenu () {

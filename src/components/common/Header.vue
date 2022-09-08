@@ -14,18 +14,22 @@
         <v-btn icon>
           <v-icon>mdi-heart</v-icon>
         </v-btn>
-        <v-btn icon href="mailto:toto_min4016@naver.com">
+        <!-- <v-btn icon href="mailto:toto_min4016@naver.com">
             <v-icon>mdi-email</v-icon>
-        </v-btn>
+        </v-btn> -->
+        <Dropbox></Dropbox>
     </v-app-bar>
 </template>
 
 <script>
 // import { reactive, watch } from 'vue'
-
+import Dropbox from '@/components/common/Dropdown.vue'
+// import firebase from 'firebase'
 export default {
   name: 'FbHeader',
-
+  components: {
+    Dropbox
+  },
   props: {
     draw: Boolean
   },
@@ -35,8 +39,12 @@ export default {
       emit('dropmenu')
     }
 
+    // async function login () {
+    // }
+
     return {
       menudrop
+      // login
     }
   }
 
@@ -44,19 +52,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// ::v-deep .v-btn__content {
-//     width: 100%;
-//     height: 100%;
+// .d-flex {
+//   position: fixed;
+//   top: 50%;
+//   left: 50%;
 // }
-// a {
-//     display: block;
-//     width: 100%;
-//     height: 100%;
-
-//     color: #ffffff;
-//     text-decoration: none;
-
-//     line-height: 350%;
-// }
-
 </style>

@@ -34,7 +34,7 @@ import { reactive, onMounted } from 'vue'
 import {
   getDatabase,
   ref,
-  set,
+  // set,
   onValue,
   // child,
   // push,
@@ -90,14 +90,14 @@ export default {
     })
 
     onMounted(() => {
-      save()
+      // save()
       read()
     })
 
-    function save () {
-      const db = getDatabase()
-      set(ref(db, 'menu/'), { item: state.item })
-    }
+    // function save () {
+    //   const db = getDatabase()
+    //   set(ref(db, 'menu/'), { item: state.item })
+    // }
 
     function read () {
       const db = getDatabase()
@@ -140,7 +140,7 @@ export default {
 
     return {
       state,
-      save,
+      // save,
       read,
       navupdate,
       navedit,
