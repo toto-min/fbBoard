@@ -50,6 +50,8 @@ import { reactive } from 'vue'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 // import { auth } from '@/plugins/firebase'
 
+import { collection, addDoc, getFirestore } from 'firebase/firestore'
+
 export default {
   name: 'fbSignUp',
 
@@ -82,7 +84,14 @@ export default {
     function SignUp () {
       createUserWithEmailAndPassword(getAuth(), state.email, state.password)
         .then((credential) => {
-          console.log(credential.user)
+          const db = getFirestore()
+          const docs = collection(db, 'user')
+          const users = addDoc(docs, {
+            email: credential.user.email,
+            uid: credential.user.uid,
+            date: new Date()
+          })
+          console.log(users)
         }).catch((err) => {
           console.log(err)
         })

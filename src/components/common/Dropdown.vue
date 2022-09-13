@@ -26,21 +26,8 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
 export default {
-  name: 'fbDrobdown',
-  setup (props, { emit }) {
-    const state = reactive({})
-
-    // function loginbtn () {
-    //   emit('logined')
-    // }
-
-    return {
-      state
-      // loginbtn
-    }
-  }
+  name: 'fbDrobdown'
 }
 </script>
 

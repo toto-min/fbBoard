@@ -39,12 +39,8 @@ export default {
       emit('dropmenu')
     }
 
-    // async function login () {
-    // }
-
     return {
       menudrop
-      // login
     }
   }
 
