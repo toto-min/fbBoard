@@ -101,7 +101,14 @@ export default {
       const provider = new GoogleAuthProvider()
       signInWithPopup(getAuth(), provider)
         .then((result) => {
-          console.log(result.user)
+          const db = getFirestore()
+          const docs = collection(db, 'user')
+          const user = addDoc(docs, {
+            email: result.user.email,
+            uid: result.user.uid,
+            date: new Date()
+          })
+          console.log(user)
         }).catch((err) => {
           console.log(err)
         })
