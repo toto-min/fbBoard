@@ -7,12 +7,17 @@
     permanent
     >
     <v-list color="transparent">
-        <v-list-item v-for="(nav, i) in state.item" :key="nav">
+        <v-list-item v-for="nav in state.item" :key="nav">
             <router-link :to="{name: nav.name, query: {id: nav.query.id}}">{{nav.text}}</router-link>
             <!-- <v-btn icon x-small> -->
-            <v-icon x-small @click="navedit(i)">mdi-pencil</v-icon>
-            <v-icon color="red" x-small @click="navdel">mdi-close</v-icon>
             <!-- </v-btn> -->
+        </v-list-item>
+        <v-list-item v-for="(na, i) in state.nav" :key="i">
+          <router-link :to="{name: na.name, query: {id: na.query.id}}">
+            {{na.text}}
+          </router-link>
+          <v-icon x-small @click="navedit(i)">mdi-pencil</v-icon>
+          <v-icon color="red" x-small @click="navdel(i)">mdi-close</v-icon>
         </v-list-item>
         <!-- <v-btn > -->
         <v-spacer></v-spacer>
@@ -22,7 +27,7 @@
         <!-- </v-btn> -->
     </v-list>
     </v-navigation-drawer>
-    <MDialog @addMenu="navedited" v-if="state.dialogedit" :title="state.item[state.num].text"></MDialog>
+    <MDialog @addMenu="navedited" v-if="state.dialogedit" :title="state.nav[state.num].text"></MDialog>
     <MDialog @addMenu="navupdate" v-if="state.dialog"></MDialog>
   </div>
 </template>
@@ -34,21 +39,23 @@ import { reactive, onMounted } from 'vue'
 import {
   getDatabase,
   ref,
-  // set,
+  set,
   onValue,
-  // child,
-  // push,
-  update
+  child,
+  push,
+  update,
+  remove
 } from 'firebase/database'
 
 class Addpath {
-  constructor (text) {
+  constructor (text, key) {
     this.name = 'AddText'
     this.path = '/add'
     this.text = text
     this.query = {
       id: text
     }
+    this.key = key
   }
 }
 export default {
@@ -86,6 +93,7 @@ export default {
           }
         }
       ],
+      nav: [],
       num: 0
     })
 
@@ -94,28 +102,29 @@ export default {
       read()
     })
 
-    // function save () {
-    //   const db = getDatabase()
-    //   set(ref(db, 'menu/'), { item: state.item })
-    // }
+    function save () {
+      const db = getDatabase()
+      set(ref(db, 'menu/'), { item: state.nav })
+    }
 
     function read () {
       const db = getDatabase()
       const navmenu = ref(db, 'menu/item')
 
       onValue(navmenu, (snapshot) => {
-        state.item = snapshot.val()
+        state.nav = snapshot.val()
       })
     }
 
     function navupdate (title) {
       const db = getDatabase()
-      const postData = new Addpath(title)
-      const newKey = state.item.length
+      const newKey = push(child(ref(db), 'main/item')).key
+      const postData = new Addpath(title, newKey)
       const updates = {}
       updates['menu/item/' + newKey] = postData
 
       state.dialog = false
+      save()
       return update(ref(db), updates)
     }
 
@@ -126,17 +135,21 @@ export default {
 
     function navedited (title) {
       const db = getDatabase()
-      const postData = new Addpath(title)
-      const newKey = state.num
+      const newKey = state.nav[state.num].key
+      const postData = new Addpath(title, newKey)
 
       const updates = {}
 
       updates['menu/item/' + newKey] = postData
       state.dialogedit = false
+      save()
       return update(ref(db), updates)
     }
 
-    function navdel () {}
+    function navdel (i) {
+      const db = getDatabase()
+      remove(ref(db, 'menu/item/' + i))
+    }
 
     return {
       state,
