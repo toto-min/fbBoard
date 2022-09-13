@@ -52,10 +52,12 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, Go
 
 import { collection, addDoc, getFirestore } from 'firebase/firestore'
 
+import { useStore } from 'vuex'
 export default {
   name: 'fbSignUp',
 
   setup () {
+    const store = useStore()
     const state = reactive({
       email: '',
       emailRules: [
@@ -75,7 +77,13 @@ export default {
     function login () {
       signInWithEmailAndPassword(getAuth(), state.email, state.password)
         .then((credential) => {
-          console.log(credential.user)
+          const user = {
+            email: credential.user.email,
+            uid: credential.user.uid,
+            date: credential.user.metadata.lastSignInTime
+          }
+
+          store.state.fireuser = user
         }).catch((err) => {
           console.log(err)
         })
@@ -86,12 +94,14 @@ export default {
         .then((credential) => {
           const db = getFirestore()
           const docs = collection(db, 'user')
-          const users = addDoc(docs, {
+          const users = {
             email: credential.user.email,
             uid: credential.user.uid,
             date: new Date()
-          })
-          console.log(users)
+          }
+
+          addDoc(docs, users)
+          store.state.fireuser = users
         }).catch((err) => {
           console.log(err)
         })
@@ -103,12 +113,14 @@ export default {
         .then((result) => {
           const db = getFirestore()
           const docs = collection(db, 'user')
-          const user = addDoc(docs, {
+          const user = {
             email: result.user.email,
             uid: result.user.uid,
             date: new Date()
-          })
-          console.log(user)
+          }
+
+          addDoc(docs, user)
+          store.state.fireuser = user
         }).catch((err) => {
           console.log(err)
         })
@@ -117,7 +129,7 @@ export default {
     function logOut () {
       signOut(getAuth())
         .then(() => {
-          console.log('success')
+          store.state.fireuser = null
         }).catch((err) => {
           console.log(err)
         })
