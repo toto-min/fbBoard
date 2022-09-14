@@ -50,7 +50,7 @@ import { reactive } from 'vue'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 // import { auth } from '@/plugins/firebase'
 
-import { collection, addDoc, getFirestore } from 'firebase/firestore'
+// import { collection, addDoc, getFirestore } from 'firebase/firestore'
 
 import { useStore } from 'vuex'
 export default {
@@ -92,16 +92,17 @@ export default {
     function SignUp () {
       createUserWithEmailAndPassword(getAuth(), state.email, state.password)
         .then((credential) => {
-          const db = getFirestore()
-          const docs = collection(db, 'user')
-          const users = {
-            email: credential.user.email,
-            uid: credential.user.uid,
-            date: new Date()
-          }
+          console.log(credential.user)
+          // const db = getFirestore()
+          // const docs = collection(db, 'user')
+          // const users = {
+          //   email: credential.user.email,
+          //   uid: credential.user.uid,
+          //   date: new Date()
+          // }
 
-          addDoc(docs, users)
-          store.state.fireuser = users
+          // addDoc(docs, users)
+          // store.state.fireuser = users
         }).catch((err) => {
           console.log(err)
         })
@@ -111,16 +112,7 @@ export default {
       const provider = new GoogleAuthProvider()
       signInWithPopup(getAuth(), provider)
         .then((result) => {
-          const db = getFirestore()
-          const docs = collection(db, 'user')
-          const user = {
-            email: result.user.email,
-            uid: result.user.uid,
-            date: new Date()
-          }
-
-          addDoc(docs, user)
-          store.state.fireuser = user
+          console.log(result)
         }).catch((err) => {
           console.log(err)
         })
